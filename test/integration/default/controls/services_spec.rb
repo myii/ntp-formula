@@ -21,6 +21,7 @@ end
 control 'ntp service (running)' do
   impact 0.5
   title 'should be running'
+  require 'rspec/retry'
   only_if(
     'unable to run the service in a container due to its '\
     '`ConditionVirtualization` setting'
@@ -29,6 +30,6 @@ control 'ntp service (running)' do
   end
 
   describe service(service_name) do
-    it { should be_running }
+    it(retry: 30) { should be_running }
   end
 end
